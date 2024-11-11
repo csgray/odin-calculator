@@ -1,0 +1,94 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding: 2vmax;
+}
+
+#calculator {
+    width: fit-content;
+    padding: 1vmax;
+
+    background-color: blue;
+    color: white;
+
+    border: 2px solid black;
+    border-radius: 8px;
+    box-shadow: 4px 4px 4px black;
+}
+
+#display {
+    height: 3rem;
+    padding: 0.2rem;
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2.6rem;
+    text-align: right;
+
+    background-color: lightgrey;
+    color: black;
+
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+#text {
+    padding-block: 0.2rem;
+
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: right;
+}
+
+#buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.row {
+    display: flex;
+}
+
+.column {
+    width: 4rem;
+
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0.3rem;
+}
+
+.gap {
+    width: 2rem;
+}
+
+.button {
+    height: 3rem; 
+    padding: 0.3rem;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1rem;
+
+    border: 1px solid black;
+    border-radius: 4px;
+    box-shadow: 2px 2px 2px black;
+}
+
+.operand {
+    background-color: red;
+    color: white;
+}
+
+.digit  {
+    background-color: white;
+    color: blue;
+}
+
+#equals {
+    height: 6.3rem; /* two buttons plus gap */
+}
