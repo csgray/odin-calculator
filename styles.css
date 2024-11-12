@@ -6,18 +6,23 @@
 
 body {
     padding: 2vmax;
+
+    display: flex;
+    justify-content: center;
 }
 
 #calculator {
+    /* height: 110mm;
+    width: 64mm; */
     width: fit-content;
     padding: 1vmax;
 
-    background-color: blue;
-    color: white;
+    background-color: #2863a0;
+    color: #f6f6f6;
 
-    border: 2px solid black;
+    border: 2px solid #000000;
     border-radius: 8px;
-    box-shadow: 4px 4px 4px black;
+    box-shadow: 4px 4px 4px #000000;
 }
 
 #display {
@@ -28,10 +33,10 @@ body {
     font-size: 2.6rem;
     text-align: right;
 
-    background-color: lightgrey;
-    color: black;
+    background-color: #c9d0c8;
+    color: #000000;
 
-    border: 1px solid black;
+    border: 1px solid #000000;
     border-radius: 4px;
 }
 
@@ -74,19 +79,20 @@ body {
     font-size: 1.2rem;
     line-height: 1rem;
 
-    border: 1px solid black;
+    border: 1px solid #000000;
     border-radius: 4px;
-    box-shadow: 2px 2px 2px black;
+    box-shadow: 2px 2px 2px #000000;
 }
 
-.operand {
-    background-color: red;
-    color: white;
+.operand,
+#equals {
+    background-color: #ba403c;
+    color: #f6f6f6;
 }
 
 .digit  {
-    background-color: white;
-    color: blue;
+    background-color: #f6f6f6;
+    color: #2863a0;
 }
 
 #equals {

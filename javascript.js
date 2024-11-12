@@ -51,7 +51,7 @@ function checkDisplayOverflow() {
     return displayText.textContent.length >= 12;
 }
 
-function display(symbol) {
+function updateDisplay(symbol) {
     displayText.textContent += symbol;
 }
 
@@ -59,8 +59,8 @@ function clearDisplay() {
     displayText.textContent = "";
 }
 
-// Buttons
-function displayDigit() {
+// Digits
+function pushDigit() {
     if (checkDisplayOverflow()) return;
 
     if (newNumber) {
@@ -68,23 +68,55 @@ function displayDigit() {
         newNumber = false;
     }
 
+    if (displayText.textContent === "0") {
+        clearDisplay();
+    }
+
     symbol = this.textContent;
-    display(symbol);
+    updateDisplay(symbol);
     (operand === "") ? numberA += symbol : numberB += symbol;
 }
 
 const digits = document.querySelectorAll(".digit");
 digits.forEach(function (digit) {
-    digit.addEventListener("click", displayDigit);
+    digit.addEventListener("click", pushDigit);
 });
 
-function displayOperand() {
+// Operands: +, -, x, /
+function pushOperand() {
     console.log(this.textContent);
-    (numberB === "") ? operand = this.id : operate(operand, numberA, numberB);
+
+    // Execute the staged operand if there is already a second number
+    if (numberB) operate(operand, numberA, numberB);
+
+    operand = this.id;
     newNumber = true;
 }
 
 const operands = document.querySelectorAll(".operand");
 operands.forEach(function (operand) {
-    operand.addEventListener("click", displayOperand);
+    operand.addEventListener("click", pushOperand);
 });
+
+// =
+function pushEquals() {
+    console.log(this.textContent);
+    operate(operand, numberA, numberB);
+    newNumber = true;
+}
+
+const equals = document.getElementById("equals");
+equals.addEventListener("click", pushEquals);
+
+// ON/C
+function clearState() {
+    numberA = "";
+    numberB = "";
+    operand = "";
+    newNumber = false;
+    clearDisplay();
+    updateDisplay("0");
+}
+
+const clearButton = document.getElementById("clear");
+clearButton.addEventListener("click", clearState);
