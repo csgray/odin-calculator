@@ -1,10 +1,11 @@
 // Shared elements
 const displayText = document.getElementById("display");
 
-// Shared variables
+// State
 let numberA = "";
 let numberB = "";
 let operand = "";
+let newNumber = false;
 
 // Basic arithmetic functions
 function add(a, b) { return a + b };
@@ -19,6 +20,8 @@ function operate(operand, a, b) {
 
     console.log(`A: ${a}`);
     console.log(`B: ${b}`);
+    console.log(operand);
+
     switch (operand) {
         case "add":
             total = add(a, b);
@@ -39,10 +42,11 @@ function operate(operand, a, b) {
     console.log(total);
     numberA = total;
     numberB = "";
-    if (operand)
-        displayText.textContent = numberA;
+    operand = "";
+    displayText.textContent = numberA;
 }
 
+// Display functions
 function checkDisplayOverflow() {
     return displayText.textContent.length >= 12;
 }
@@ -51,8 +55,18 @@ function display(symbol) {
     displayText.textContent += symbol;
 }
 
+function clearDisplay() {
+    displayText.textContent = "";
+}
+
+// Buttons
 function displayDigit() {
     if (checkDisplayOverflow()) return;
+
+    if (newNumber) {
+        clearDisplay();
+        newNumber = false;
+    }
 
     symbol = this.textContent;
     display(symbol);
@@ -65,12 +79,9 @@ digits.forEach(function (digit) {
 });
 
 function displayOperand() {
-    if (checkDisplayOverflow()) return;
-
-    symbol = this.textContent;
-    console.log(symbol);
-    display(this.textContent);
-    (operand === "") ? operand = this.id : operate(operand, numberA, numberB);
+    console.log(this.textContent);
+    (numberB === "") ? operand = this.id : operate(operand, numberA, numberB);
+    newNumber = true;
 }
 
 const operands = document.querySelectorAll(".operand");
