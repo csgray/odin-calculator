@@ -111,14 +111,10 @@ function pushDigit() {
     // Disable calculator when powered off or error state exists
     if (!isOn || isError) return;
 
-    // Don't create leading zeroes
-    if (displayText.textContent === "0") {
-        clearDisplay();
-    }
-
     // Create a new number when numberA is already populated
     if (newNumber) {
         clearDisplay();
+        updateDisplay("0");
         newNumber = false;
     }
 
@@ -126,6 +122,12 @@ function pushDigit() {
     if (checkDisplayOverflow()) return;
 
     symbol = this.textContent;
+
+    // Don't create leading zeroes unless it's a decimal
+    if (displayText.textContent === "0" && symbol !== ".") clearDisplay();
+    // Only allow one decimal point
+    if (symbol === "." && displayText.textContent.indexOf(".") > -1) return;
+
     updateDisplay(symbol);
     (operand === "") ? numberA += symbol : numberB += symbol;
 }
