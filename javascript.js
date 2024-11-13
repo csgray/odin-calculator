@@ -26,8 +26,8 @@ function operate(operand, a, b) {
     if (isError) return;
 
     let total = 0;
-    a = parseInt(a);
-    b = parseInt(b);
+    a = parseFloat(a);
+    b = parseFloat(b);
 
     console.log(`A: ${a}`);
     console.log(`B: ${b}`);
@@ -58,7 +58,8 @@ function operate(operand, a, b) {
         return;
     }
 
-    numberA = total;
+    console.log(`Before rounding: ${total}`);
+    numberA = roundFractional(total);
     numberB = "";
     operand = "";
     displayText.textContent = numberA;
@@ -83,6 +84,16 @@ function showError() {
 
 function clearError() {
     errorIndicator.textContent = "";
+}
+
+function roundFractional(num) {
+    // Make room for the leading zero with small numbers
+    if (Math.abs(num) < 1) {
+        // parseFloat removes trailing zeroes
+        return parseFloat(num.toPrecision(DISPLAY_LENGTH - 1));
+    } else {
+        return parseFloat(num.toPrecision(DISPLAY_LENGTH));
+    }
 }
 
 // Digits
