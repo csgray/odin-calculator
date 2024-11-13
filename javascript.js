@@ -9,7 +9,7 @@ const errorIndicator = document.getElementById("error");
 
 // State
 let isOn = false;
-let numberA = "";
+let numberA = 0;
 let numberB = "";
 let operand = "";
 let memory = 0;
@@ -28,8 +28,10 @@ function multiply(a, b) { return a * b };
 function divide(a, b) { return a / b };
 
 function operate(operand, a, b) {
-    // Disable calculator when error state exists
-    if (isError) return;
+    // Disable calculator when error state exists.
+    // Do not operate if called without an operand, which happens when the
+    // equals button is pushed without numberB and without lastOperand.
+    if (isError || !operand) return;
 
     let total = 0;
     a = parseFloat(a);
@@ -161,13 +163,10 @@ function pushEquals() {
     console.log(this.textContent);
     // Do nothing if a number is missing.
     // Needs to check for empty string as "0" is falsy.
-    if (numberA === "") {
-        return;
-    } else if (numberB === "") {
-        operate(lastOperand, numberA, lastNumberB);
-    } else {
-        operate(operand, numberA, numberB);
-    }
+    if (!operand) return;
+    else if (numberB === "") operate(lastOperand, numberA, lastNumberB);
+    else operate(operand, numberA, numberB);
+
     newNumber = true;
     lastButton = this.id;
 }
@@ -186,13 +185,13 @@ function clearCurrentNumber() {
     console.log("CLEAR CURRENT")
     clearDisplay();
     updateDisplay("0");
-    (operand === "") ? numberA = "" : numberB = "";
+    (operand === "") ? numberA = 0 : numberB = "";
 }
 
 function clearState() {
     console.log("CLEAR STATE")
 
-    numberA = "";
+    numberA = 0;
     numberB = "";
     operand = "";
     memory = 0;
