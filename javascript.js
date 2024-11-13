@@ -1,11 +1,19 @@
+// Constants
+const DISPLAY_LENGTH = 8; // TI-108 can display eight digits
+const OVERFLOW = parseInt("9".repeat(DISPLAY_LENGTH));
+
 // Shared elements
-const displayText = document.getElementById("display");
+const displayText = document.getElementById("number");
+const memoryIndicator = document.getElementById("memory");
+const errorIndicator = document.getElementById("error");
 
 // State
 let numberA = "";
 let numberB = "";
 let operand = "";
+let memory = 0;
 let newNumber = false;
+let isError = false;
 
 // Basic arithmetic functions
 function add(a, b) { return a + b };
@@ -14,6 +22,9 @@ function multiply(a, b) { return a * b };
 function divide(a, b) { return a / b };
 
 function operate(operand, a, b) {
+    // Disable calculator when error state exists
+    if (isError) return;
+
     let total = 0;
     a = parseInt(a);
     b = parseInt(b);
@@ -39,7 +50,14 @@ function operate(operand, a, b) {
             throw SyntaxError(`Invalid operand: ${operand}`);
     }
 
-    console.log(total);
+    if (Math.abs(total) > OVERFLOW) {
+        console.log(`Overflow: ${total}`)
+        isError = true;
+        showError();
+        displayText.textContent = (OVERFLOW * Math.sign(total)).toString();
+        return;
+    }
+
     numberA = total;
     numberB = "";
     operand = "";
@@ -48,7 +66,7 @@ function operate(operand, a, b) {
 
 // Display functions
 function checkDisplayOverflow() {
-    return displayText.textContent.length >= 12;
+    return displayText.textContent.length >= DISPLAY_LENGTH;
 }
 
 function updateDisplay(symbol) {
@@ -59,18 +77,32 @@ function clearDisplay() {
     displayText.textContent = "";
 }
 
+function showError() {
+    errorIndicator.textContent = "E";
+}
+
+function clearError() {
+    errorIndicator.textContent = "";
+}
+
 // Digits
 function pushDigit() {
-    if (checkDisplayOverflow()) return;
+    // Disable calculator when error state exists
+    if (isError) return;
 
+    // Don't create leading zeroes
+    if (displayText.textContent === "0") {
+        clearDisplay();
+    }
+
+    // Create a new number when numberA is already populated
     if (newNumber) {
         clearDisplay();
         newNumber = false;
     }
 
-    if (displayText.textContent === "0") {
-        clearDisplay();
-    }
+    // Do not add additional digits when display is full
+    if (checkDisplayOverflow()) return;
 
     symbol = this.textContent;
     updateDisplay(symbol);
@@ -113,7 +145,11 @@ function clearState() {
     numberA = "";
     numberB = "";
     operand = "";
+    memory = 0;
     newNumber = false;
+    isError = false;
+
+    clearError();
     clearDisplay();
     updateDisplay("0");
 }

@@ -30,14 +30,29 @@ body {
     padding: 0.2rem;
 
     font-family: 'Courier New', Courier, monospace;
-    font-size: 2.6rem;
-    text-align: right;
 
     background-color: #c9d0c8;
     color: #000000;
 
     border: 1px solid #000000;
     border-radius: 4px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+#indicators {
+    font-size: 1rem;
+    text-align: left;
+
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+#number {
+    font-size: 2.6rem;
+    text-align: right;
 }
 
 #text {
