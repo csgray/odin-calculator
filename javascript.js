@@ -14,6 +14,9 @@ let operand = "";
 let memory = 0;
 let newNumber = false;
 let isError = false;
+// Previous operation for equals button function
+let lastNumberB = "";
+let lastOperand = "";
 
 // Basic arithmetic functions
 function add(a, b) { return a + b };
@@ -60,7 +63,9 @@ function operate(operand, a, b) {
 
     console.log(`Before rounding: ${total}`);
     numberA = roundFractional(total);
+    lastNumberB = b;
     numberB = "";
+    lastOperand = operand;
     operand = "";
     displayText.textContent = numberA;
 }
@@ -144,7 +149,15 @@ operands.forEach(function (operand) {
 // =
 function pushEquals() {
     console.log(this.textContent);
-    operate(operand, numberA, numberB);
+    // Do nothing if a number is missing.
+    // Needs to check for empty string as "0" is falsy.
+    if (numberA === "") {
+        return;
+    } else if (numberB === "") {
+        operate(lastOperand, numberA, lastNumberB);
+    } else {
+        operate(operand, numberA, numberB);
+    }
     newNumber = true;
 }
 
@@ -159,6 +172,8 @@ function clearState() {
     memory = 0;
     newNumber = false;
     isError = false;
+    lastNumberB = "";
+    lastOperand = "";
 
     clearError();
     clearDisplay();
