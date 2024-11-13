@@ -8,6 +8,7 @@ const memoryIndicator = document.getElementById("memory");
 const errorIndicator = document.getElementById("error");
 
 // State
+let isOn = false;
 let numberA = "";
 let numberB = "";
 let operand = "";
@@ -17,6 +18,8 @@ let isError = false;
 // Previous operation for equals button function
 let lastNumberB = "";
 let lastOperand = "";
+// Tracking multiple button pushes for clear and memory
+let lastButton = "";
 
 // Basic arithmetic functions
 function add(a, b) { return a + b };
@@ -103,8 +106,8 @@ function roundFractional(num) {
 
 // Digits
 function pushDigit() {
-    // Disable calculator when error state exists
-    if (isError) return;
+    // Disable calculator when powered off or error state exists
+    if (!isOn || isError) return;
 
     // Don't create leading zeroes
     if (displayText.textContent === "0") {
@@ -132,6 +135,9 @@ digits.forEach(function (digit) {
 
 // Operands: +, -, x, /
 function pushOperand() {
+    // Disable calculator when powered off or error state exists
+    if (!isOn || isError) return;
+
     console.log(this.textContent);
 
     // Execute the staged operand if there is already a second number
@@ -139,6 +145,7 @@ function pushOperand() {
 
     operand = this.id;
     newNumber = true;
+    lastButton = this.id;
 }
 
 const operands = document.querySelectorAll(".operand");
@@ -148,6 +155,9 @@ operands.forEach(function (operand) {
 
 // =
 function pushEquals() {
+    // Disable calculator when powered off or error state exists
+    if (!isOn || isError) return;
+
     console.log(this.textContent);
     // Do nothing if a number is missing.
     // Needs to check for empty string as "0" is falsy.
@@ -159,13 +169,29 @@ function pushEquals() {
         operate(operand, numberA, numberB);
     }
     newNumber = true;
+    lastButton = this.id;
 }
 
 const equals = document.getElementById("equals");
 equals.addEventListener("click", pushEquals);
 
 // ON/C
+function powerOn() {
+    console.log("POWER ON")
+    isOn = true;
+    updateDisplay("0");
+}
+
+function clearCurrentNumber() {
+    console.log("CLEAR CURRENT")
+    clearDisplay();
+    updateDisplay("0");
+    (operand === "") ? numberA = "" : numberB = "";
+}
+
 function clearState() {
+    console.log("CLEAR STATE")
+
     numberA = "";
     numberB = "";
     operand = "";
@@ -180,5 +206,12 @@ function clearState() {
     updateDisplay("0");
 }
 
+function pushClear() {
+    if (!isOn) powerOn();
+    else if (lastButton === "clear") clearState();
+    else clearCurrentNumber();
+    lastButton = this.id;
+}
+
 const clearButton = document.getElementById("clear");
-clearButton.addEventListener("click", clearState);
+clearButton.addEventListener("click", pushClear);
