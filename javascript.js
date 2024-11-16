@@ -216,3 +216,17 @@ function pushClear() {
 
 const clearButton = document.getElementById("clear");
 clearButton.addEventListener("click", pushClear);
+
+// +/-
+function pushNegativeButton() {
+    if (operand === "") {
+        numberA *= -1;
+        displayText.textContent = numberA;
+    } else {
+        numberB *= -1;
+        displayText.textContent = numberB;
+    }
+}
+
+const negativeButton = document.getElementById("negative");
+negativeButton.addEventListener("click", pushNegativeButton);
