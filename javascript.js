@@ -107,7 +107,7 @@ function roundFractional(num) {
 }
 
 // Digits
-function pushDigit() {
+function pushDigit(symbol) {
     // Disable calculator when powered off or error state exists
     if (!isOn || isError) return;
 
@@ -121,8 +121,6 @@ function pushDigit() {
     // Do not add additional digits when display is full
     if (checkDisplayOverflow()) return;
 
-    symbol = this.textContent;
-
     // Don't create leading zeroes unless it's a decimal
     if (displayText.textContent === "0" && symbol !== ".") clearDisplay();
     // Only allow one decimal point
@@ -134,27 +132,25 @@ function pushDigit() {
 
 const digits = document.querySelectorAll(".digit");
 digits.forEach(function (digit) {
-    digit.addEventListener("click", pushDigit);
+    digit.addEventListener("click", (event) => pushDigit(event.target.textContent))
 });
 
 // Operands: +, -, x, /
-function pushOperand() {
+function pushOperand(symbol) {
     // Disable calculator when powered off or error state exists
     if (!isOn || isError) return;
-
-    console.log(this.textContent);
 
     // Execute the staged operand if there is already a second number
     if (numberB) operate(operand, numberA, numberB);
 
-    operand = this.id;
+    operand = symbol;
     newNumber = true;
-    lastButton = this.id;
+    lastButton = symbol;
 }
 
 const operands = document.querySelectorAll(".operand");
-operands.forEach(function (operand) {
-    operand.addEventListener("click", pushOperand);
+operands.forEach(function (o) {
+    o.addEventListener("click", (event) => pushOperand(event.target.id));
 });
 
 // =
@@ -162,7 +158,7 @@ function pushEquals() {
     // Disable calculator when powered off or error state exists
     if (!isOn || isError) return;
 
-    console.log(this.textContent);
+    console.log("=");
     // Do nothing if a number is missing.
     // Needs to check for empty string as "0" is falsy.
     if (!operand) return;
@@ -170,7 +166,7 @@ function pushEquals() {
     else operate(operand, numberA, numberB);
 
     newNumber = true;
-    lastButton = this.id;
+    lastButton = "equals";
 }
 
 const equals = document.getElementById("equals");
@@ -230,3 +226,62 @@ function pushNegativeButton() {
 
 const negativeButton = document.getElementById("negative");
 negativeButton.addEventListener("click", pushNegativeButton);
+
+// Keyboard input
+document.addEventListener("keypress", (event) => {
+    console.log(event.key);
+    const keyName = event.key;
+    switch (keyName) {
+        // Digits
+        case "0":
+            pushDigit("0");
+            break;
+        case "1":
+            pushDigit("1");
+            break;
+        case "2":
+            pushDigit("2");
+            break;
+        case "3":
+            pushDigit("3");
+            break;
+        case "4":
+            pushDigit("4");
+            break;
+        case "5":
+            pushDigit("5");
+            break;
+        case "6":
+            pushDigit("6");
+            break;
+        case "7":
+            pushDigit("7");
+            break;
+        case "8":
+            pushDigit("8");
+            break;
+        case "9":
+            pushDigit("9");
+            break;
+        case ".":
+            pushDigit(".");
+            break;
+        // Operands
+        case "+":
+            pushOperand("add");
+            break;
+        case "-":
+            pushOperand("subtract");
+            break;
+        case "*":
+            pushOperand("multiply");
+            break;
+        case "/":
+            pushOperand("divide");
+            break;
+        case "=":
+        case "Enter":
+            pushEquals();
+            break;
+    }
+})
