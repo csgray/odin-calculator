@@ -228,7 +228,7 @@ const negativeButton = document.getElementById("negative");
 negativeButton.addEventListener("click", pushNegativeButton);
 
 // Keyboard input
-document.addEventListener("keypress", (event) => {
+document.addEventListener("keydown", (event) => {
     console.log(event.key);
     const keyName = event.key;
     switch (keyName) {
