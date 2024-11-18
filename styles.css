@@ -14,7 +14,7 @@ body {
 #calculator {
     /* height: 110mm;
     width: 64mm; */
-    width: fit-content;
+    /* width: fit-content; */
     padding: 1vmax;
 
     background-color: #2863a0;
@@ -94,9 +94,17 @@ body {
     font-size: 1.2rem;
     line-height: 1rem;
 
+    position: relative;
     border: 1px solid #000000;
     border-radius: 4px;
     box-shadow: 2px 2px 2px #000000;
+}
+
+.button:active,
+.active {
+    top: 2px;
+    left: 1px;
+    box-shadow: none;
 }
 
 .function, .operand {

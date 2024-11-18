@@ -7,6 +7,30 @@ const displayText = document.getElementById("number");
 const memoryIndicator = document.getElementById("memory");
 const errorIndicator = document.getElementById("error");
 
+// Buttons
+const digits = document.querySelectorAll(".digit");
+const zeroButton = document.getElementById("zero");
+const oneButton = document.getElementById("one");
+const twoButton = document.getElementById("two");
+const threeButton = document.getElementById("three");
+const fourButton = document.getElementById("four");
+const fiveButton = document.getElementById("five");
+const sixButton = document.getElementById("six");
+const sevenButton = document.getElementById("seven");
+const eightButton = document.getElementById("eight");
+const nineButton = document.getElementById("nine");
+const decimalButton = document.getElementById("decimal");
+
+const operands = document.querySelectorAll(".operand");
+const addButton = document.getElementById("add");
+const subtractButton = document.getElementById("subtract");
+const multiplyButton = document.getElementById("multiply");
+const divideButton = document.getElementById("divide");
+
+const equalsButton = document.getElementById("equals");
+const clearButton = document.getElementById("clear");
+const negativeButton = document.getElementById("negative");
+
 // State
 let isOn = false;
 let numberA = 0;
@@ -130,7 +154,6 @@ function pushDigit(symbol) {
     (operand === "") ? numberA += symbol : numberB += symbol;
 }
 
-const digits = document.querySelectorAll(".digit");
 digits.forEach(function (digit) {
     digit.addEventListener("click", (event) => pushDigit(event.target.textContent))
 });
@@ -148,7 +171,6 @@ function pushOperand(symbol) {
     lastButton = symbol;
 }
 
-const operands = document.querySelectorAll(".operand");
 operands.forEach(function (o) {
     o.addEventListener("click", (event) => pushOperand(event.target.id));
 });
@@ -169,8 +191,7 @@ function pushEquals() {
     lastButton = "equals";
 }
 
-const equals = document.getElementById("equals");
-equals.addEventListener("click", pushEquals);
+equalsButton.addEventListener("click", pushEquals);
 
 // ON/C
 function powerOn() {
@@ -207,10 +228,9 @@ function pushClear() {
     if (!isOn) powerOn();
     else if (lastButton === "clear") clearState();
     else clearCurrentNumber();
-    lastButton = this.id;
+    lastButton = "clear";
 }
 
-const clearButton = document.getElementById("clear");
 clearButton.addEventListener("click", pushClear);
 
 // +/-
@@ -224,7 +244,6 @@ function pushNegativeButton() {
     }
 }
 
-const negativeButton = document.getElementById("negative");
 negativeButton.addEventListener("click", pushNegativeButton);
 
 // Keyboard input
@@ -234,54 +253,81 @@ document.addEventListener("keydown", (event) => {
     switch (keyName) {
         // Digits
         case "0":
+            zeroButton.classList.add("active");
             pushDigit("0");
             break;
         case "1":
+            oneButton.classList.add("active");
             pushDigit("1");
             break;
         case "2":
+            twoButton.classList.add("active");
             pushDigit("2");
             break;
         case "3":
+            threeButton.classList.add("active");
             pushDigit("3");
             break;
         case "4":
+            fourButton.classList.add("active");
             pushDigit("4");
             break;
         case "5":
+            fiveButton.classList.add("active");
             pushDigit("5");
             break;
         case "6":
+            sixButton.classList.add("active");
             pushDigit("6");
             break;
         case "7":
+            sevenButton.classList.add("active");
             pushDigit("7");
             break;
         case "8":
+            eightButton.classList.add("active");
             pushDigit("8");
             break;
         case "9":
+            nineButton.classList.add("active");
             pushDigit("9");
             break;
         case ".":
+            decimalButton.classList.add("active");
             pushDigit(".");
             break;
         // Operands
         case "+":
+            addButton.classList.add("active");
             pushOperand("add");
             break;
         case "-":
+            subtractButton.classList.add("active");
             pushOperand("subtract");
             break;
         case "*":
+            multiplyButton.classList.add("active");
             pushOperand("multiply");
             break;
         case "/":
+            divideButton.classList.add("active");
             pushOperand("divide");
             break;
         case "=":
         case "Enter":
+            equalsButton.classList.add("active");
             pushEquals();
             break;
+        case "Backspace":
+        case "Delete":
+            clearButton.classList.add("active");
+            pushClear();
+            break;
     }
+})
+
+buttons = document.querySelectorAll(".button");
+document.addEventListener("keyup", (event) => {
+    console.log(`${event.key} up`);
+    buttons.forEach((b) => b.classList.remove("active"));
 })
