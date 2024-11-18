@@ -61,10 +61,6 @@ function operate(operand, a, b) {
     a = parseFloat(a);
     b = parseFloat(b);
 
-    console.log(`A: ${a}`);
-    console.log(`B: ${b}`);
-    console.log(operand);
-
     switch (operand) {
         case "add":
             total = add(a, b);
@@ -83,14 +79,12 @@ function operate(operand, a, b) {
     }
 
     if (Math.abs(total) > OVERFLOW) {
-        console.log(`Overflow: ${total}`)
         isError = true;
         showError();
         displayText.textContent = (OVERFLOW * Math.sign(total)).toString();
         return;
     }
 
-    console.log(`Before rounding: ${total}`);
     numberA = roundFractional(total);
     lastNumberB = b;
     numberB = "";
@@ -180,7 +174,6 @@ function pushEquals() {
     // Disable calculator when powered off or error state exists
     if (!isOn || isError) return;
 
-    console.log("=");
     // Do nothing if a number is missing.
     // Needs to check for empty string as "0" is falsy.
     if (!operand) return;
@@ -195,21 +188,17 @@ equalsButton.addEventListener("click", pushEquals);
 
 // ON/C
 function powerOn() {
-    console.log("POWER ON")
     isOn = true;
     updateDisplay("0");
 }
 
 function clearCurrentNumber() {
-    console.log("CLEAR CURRENT")
     clearDisplay();
     updateDisplay("0");
     (operand === "") ? numberA = 0 : numberB = "";
 }
 
 function clearState() {
-    console.log("CLEAR STATE")
-
     numberA = 0;
     numberB = "";
     operand = "";
@@ -248,7 +237,6 @@ negativeButton.addEventListener("click", pushNegativeButton);
 
 // Keyboard input
 document.addEventListener("keydown", (event) => {
-    console.log(event.key);
     const keyName = event.key;
     switch (keyName) {
         // Digits
@@ -328,6 +316,5 @@ document.addEventListener("keydown", (event) => {
 
 buttons = document.querySelectorAll(".button");
 document.addEventListener("keyup", (event) => {
-    console.log(`${event.key} up`);
     buttons.forEach((b) => b.classList.remove("active"));
 })
